@@ -1,1 +1,245 @@
+#include <iostream>
+using namespace std;
+
+class Entraineur{
+    protected:
+        string nomEntraineur;
+        string nomPokemon;
+        string attaque;
+        string type1;
+        string type2;
+        int PV;
+        int degat;
+        string *faiblesse;
+        string *resistance;
+        Pokemon* pokemons = new Pokemon[6];
+        int indexActuel = 0;
+
+        
+    public:
+        Entraineur(string n1,string n2, string a, string t1, string t2, int pv, int deg, string faib, 
+            string res, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4, Pokemon poke5, Pokemon poke6){
+            nomEntraineur = n1;
+            nomPokemon = n2;
+            attaque = a;
+            type1=t1;
+            type2=t2;
+            PV=pv;
+            degat=deg;
+            faiblesse = new string(faib);
+            resistance =  new string(res);
+            pokemons[0] = poke1;
+            pokemons[1] = poke2;
+            pokemons[2] = poke3;
+            pokemons[3] = poke4;
+            pokemons[4] = poke5;
+            pokemons[5] = poke6;
+        
+        }
+
+        ~Entraineur() {
+            delete[] pokemons;
+            delete faiblesse;
+            delete resistance;
+        }
+
+        void summon2(Pokemon& p) {
+
+            p.Summon();
+
+            nomPokemon = p.getNom();
+            type1=p.getType1();
+            type2=p.getType2();
+            degat=p.getDeg();
+            *faiblesse=p.getFaib();
+            *resistance=p.getRes();
+            attaque=p.getAttaque();
+
+        }
+
+        int getDegat() const { return degat; }
+        string getType1() const { return type1; }
+        string getType2() const { return type2; }
+
+        void attaque(Entraineur& cible) {
+            cout << nomPokemon << " attaque " << cible.nomPokemon<< " avec l'attaque " << attaque << "." << endl;
+            cible.receivedDamage(*this);
+        }
+
+        void receivedDamage(Entraineur& attaquant){
+            float multiplicateur = 1.0;
+        
+            // Récupérer les types d’attaque de l’attaquant
+            string typeAtt1 = attaquant.getType1();
+            string typeAtt2 = attaquant.getType2();
+            int degatsAdverses = attaquant.getDegat();
+        
+            // Calcul du multiplicateur en fonction des types
+            if (typeAtt1 == *faiblesse) multiplicateur *= 2.0;
+            if (typeAtt1 == *resistance) multiplicateur *= 0.5;
+            if (typeAtt2 != "") {
+                if (typeAtt2 == *faiblesse) multiplicateur *= 2.0;
+                if (typeAtt2 == *resistance) multiplicateur *= 0.5;
+            }
+        
+            int degatsFinaux = static_cast<int>(degatsAdverses * multiplicateur);
+        
+            // Appliquer les dégâts au Pokémon actif
+            int pvActuel = pokemons[indexActuel].getPV();
+            pvActuel -= degatsFinaux;
+            pokemons[indexActuel].setPV(pvActuel);
+        
+            cout << pokemons[indexActuel].getNom() << " a subi " << degatsFinaux << " dégâts." << endl;
+        
+            if (pvActuel <= 0) {
+                cout << pokemons[indexActuel].getNom() << " est K.O. !" << endl;
+                pokemons[indexActuel].unsummon();
+        
+                indexActuel++;
+                if (indexActuel < 6) {
+                    cout << "Le prochain Pokémon entre en combat !" << endl;
+                } else {
+                    cout << "Tous les Pokémon de " << nomEntraineur << " sont K.O. !" << endl;
+                }
+            }
+        }
+        
+};
+
+class Joueur : public Entraineur {
+    private:
+        int nbBadges;
+        int nbCombatsGagnes;
+        int nbCombatsPerdus;
+    
+    public:
+        Joueur(string n1, string n2, string a, string t1, string t2, int pv, int deg,
+               string faib, string res,
+               Pokemon poke1, Pokemon poke2, Pokemon poke3,
+               Pokemon poke4, Pokemon poke5, Pokemon poke6)
+            : Entraineur(n1, n2, a, t1, t2, pv, deg, faib, res,
+                         poke1, poke2, poke3, poke4, poke5, poke6) {
+            nbBadges = 0;
+            nbCombatsGagnes = 0;
+            nbCombatsPerdus = 0;
+        }
+    
+        // Accesseurs
+        int getBadges() const { return nbBadges; }
+        int getCombatsGagnes() const { return nbCombatsGagnes; }
+        int getCombatsPerdus() const { return nbCombatsPerdus; }
+    
+        // Modificateurs
+        void ajouterBadge() { nbBadges++; }
+        void ajouterVictoire() { nbCombatsGagnes++; }
+        void ajouterDefaite() { nbCombatsPerdus++; }
+
+        void ordre() {
+            cout << "Ordre actuel des Pokémon :" << endl;
+            for (int i = 0; i < 6; i++) {
+                cout << i + 1 << ". " << pokemons[i].getNom() << endl;
+            }
+        
+            cout << "Entrez le nouvel ordre des Pokémon (6 numéros entre 1 et 6, séparés par des espaces) : ";
+            int nouvelOrdre[6];
+            for (int i = 0; i < 6; i++) {
+                cin >> nouvelOrdre[i];
+            }
+        
+            // Vérification des indices
+            bool valide = true;
+            bool dejaVu[6] = {false};
+        
+            for (int i = 0; i < 6; i++) {
+                if (nouvelOrdre[i] < 1 || nouvelOrdre[i] > 6 || dejaVu[nouvelOrdre[i] - 1]) {
+                    valide = false;
+                    break;
+                }
+                dejaVu[nouvelOrdre[i] - 1] = true;
+            }
+        
+            if (valide) {
+                Pokemon tempEquipe[6];
+                for (int i = 0; i < 6; i++) {
+                    tempEquipe[i] = pokemons[nouvelOrdre[i] - 1];
+                }
+                for (int i = 0; i < 6; i++) {
+                    pokemons[i] = tempEquipe[i];
+                }
+                cout << "L'ordre a été mis à jour avec succès !" << endl;
+            } else {
+                cout << "Ordre invalide. Assurez-vous d'utiliser les numéros de 1 à 6 sans doublons." << endl;
+            }
+        
+            cout << "Nouvel ordre des Pokémon :" << endl;
+            for (int i = 0; i < 6; i++) {
+                cout << i + 1 << ". " << pokemons[i].getNom() << endl;
+            }
+        }
+        
+        void demanderMedaille(Leader& leader) {
+            cout << nomEntraineur << " a gagné contre le leader !" << endl;
+            cout << "Il reçoit la médaille : " << leader.getMedaille() << endl;
+            ajouterBadge(); 
+        }
+
+        string getNomEntraineur() const {
+            return nomEntraineur;
+        }
+        
+        
+};
+
+
+
+class Leader : public Entraineur {
+    private:
+        string gymnase;
+        string medaille;
+    
+    public:
+        Leader(string n1, string n2, string a, string t1, string t2, int pv, int deg,
+                string faib, string res,
+                Pokemon poke1, Pokemon poke2, Pokemon poke3,
+                Pokemon poke4, Pokemon poke5, Pokemon poke6,
+                string nomGym, string badge)
+            : Entraineur(n1, n2, a, t1, t2, pv, deg, faib, res,
+                            poke1, poke2, poke3, poke4, poke5, poke6) {
+            gymnase = nomGym;
+            medaille = badge;
+        }
+    
+        string getGymnase() const {
+            return gymnase;
+        }
+    
+        string getMedaille() const {
+            return medaille;
+        }
+
+        void accorderMedaille(Joueur& joueur) {
+            cout << nomEntraineur << " remet la médaille " << medaille
+                 << " à " << joueur.getNomEntraineur() << "." << endl;
+            joueur.ajouterBadge();
+        }
+        
+};
+
+class Maitre : public Entraineur {
+    public:
+        Maitre(string n1, string n2, string a, string t1, string t2, int pv, int deg,
+               string faib, string res,
+               Pokemon poke1, Pokemon poke2, Pokemon poke3,
+               Pokemon poke4, Pokemon poke5, Pokemon poke6)
+            : Entraineur(n1, n2, a, t1, t2, pv, deg, faib, res,
+                         poke1, poke2, poke3, poke4, poke5, poke6) {}
+    
+
+        int getDegatBoosted() const {
+            return static_cast<int>(degat * 1.25);
+        }
+    };
+    
+    
+
 
