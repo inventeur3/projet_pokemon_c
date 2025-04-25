@@ -522,6 +522,8 @@ class Pokemon{
 		string* getRes(){
 			return resistances;
 		}
-		
+		void unsummon(){
+			cout << name << " est K.O. !" << endl;
+		}
 }
 
