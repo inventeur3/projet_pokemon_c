@@ -519,8 +519,9 @@ class Pokemon{
 		string* getFaib(){
 			return faiblesses;
 		}
-		string getRes(){
+		string* getRes(){
 			return resistances;
 		}
+		
 }
 
