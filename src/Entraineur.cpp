@@ -238,6 +238,27 @@ class Maitre : public Entraineur {
         int getDegatBoosted() const {
             return static_cast<int>(degat * 1.25);
         }
+
+        void affronterMaitre(Joueur& joueur, Maitre& maitre) {
+            if (joueur.getBadges() >= 4) {
+                cout << "Vous avez toutes les médailles ! Le combat contre le Maître commence !" << endl;
+        
+                // Exemple : un seul tour de combat (à toi de gérer le tour par tour plus tard)
+        
+                // Le Maître attaque le Joueur avec dégâts boostés
+                int degatsBoost = maitre.getDegatBoosted();
+                string type1 = maitre.getType1();
+                string type2 = maitre.getType2();
+        
+                cout << maitre.getNomEntraineur() << " utilise une attaque spéciale renforcée !" << endl;
+                joueur.receivedDamage(degatsBoost, type1, type2);
+        
+            } else {
+                cout << "Vous devez obtenir toutes les médailles pour affronter le Maître." << endl;
+                cout << "Médailles actuelles : " << joueur.getBadges() << " / 4" << endl;
+            }
+        }
+        
     };
     
     
