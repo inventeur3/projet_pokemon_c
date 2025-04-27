@@ -4,30 +4,17 @@ using namespace std;
 class Entraineur{
     protected:
         string nomEntraineur;
-        string nomPokemon;
-        string attaque;
-        string type1;
-        string type2;
         int PV;
-        int degat;
-        string *faiblesse;
-        string *resistance;
+        Pokemon* actif= nullptr;
         Pokemon* pokemons = new Pokemon[6];
         int indexActuel = 0;
 
         
     public:
-        Entraineur(string n1,string n2, string a, string t1, string t2, int pv, int deg, string faib, 
-            string res, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4, Pokemon poke5, Pokemon poke6){
+        Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4, 
+                Pokemon poke5, Pokemon poke6
+            ){                            
             nomEntraineur = n1;
-            nomPokemon = n2;
-            attaque = a;
-            type1=t1;
-            type2=t2;
-            PV=pv;
-            degat=deg;
-            faiblesse = new string(faib);
-            resistance =  new string(res);
             pokemons[0] = poke1;
             pokemons[1] = poke2;
             pokemons[2] = poke3;
@@ -39,30 +26,24 @@ class Entraineur{
 
         ~Entraineur() {
             delete[] pokemons;
-            delete faiblesse;
-            delete resistance;
+            pokemons=nullptr;
+            delete actif;
+            actif = nullptr;
         }
 
         void summon2(Pokemon& p) {
 
             p.Summon();
-
-            nomPokemon = p.getNom();
-            type1=p.getType1();
-            type2=p.getType2();
-            degat=p.getDeg();
-            *faiblesse=p.getFaib();
-            *resistance=p.getRes();
-            attaque=p.getAttaque();
+            PV=p.getPVmax();
 
         }
 
-        int getDegat() const { return degat; }
-        string getType1() const { return type1; }
-        string getType2() const { return type2; }
+        int getDegat() const { return actif.getDeg(); }
+        string getType1() const { return actif.getType1(); }
+        string getType2() const { return actif.getType2(); }
 
         void attaque(Entraineur& cible) {
-            cout << nomPokemon << " attaque " << cible.nomPokemon<< " avec l'attaque " << attaque << "." << endl;
+            cout << actif.getNom() << " attaque " << cible.actif.getNom()<< " avec l'attaque " << actif.getAttaque() << "." << endl;
             cible.receivedDamage(*this);
         }
 
@@ -75,29 +56,35 @@ class Entraineur{
             int degatsAdverses = attaquant.getDegat();
         
             // Calcul du multiplicateur en fonction des types
-            if (typeAtt1 == *faiblesse) multiplicateur *= 2.0;
-            if (typeAtt1 == *resistance) multiplicateur *= 0.5;
-            if (typeAtt2 != "") {
-                if (typeAtt2 == *faiblesse) multiplicateur *= 2.0;
-                if (typeAtt2 == *resistance) multiplicateur *= 0.5;
+            for (string el:actif.getFaib()){
+                if (typeAtt1 == el or typeAtt2==el){
+                    multiplicateur *=2.0;
+                }
+            }
+
+            for (string el:actif.getRes()){
+                if (typeAtt1 == el or typeAtt2==el){
+                    multiplicateur *=0.5;
+                }
             }
         
             int degatsFinaux = static_cast<int>(degatsAdverses * multiplicateur);
         
             // Appliquer les dégâts au Pokémon actif
-            int pvActuel = pokemons[indexActuel].getPV();
-            pvActuel -= degatsFinaux;
-            pokemons[indexActuel].setPV(pvActuel);
+            PV -= degatsFinaux;
+            
         
-            cout << pokemons[indexActuel].getNom() << " a subi " << degatsFinaux << " dégâts." << endl;
+            cout << actif.getNom() << " a subi " << degatsFinaux << " dégâts." << endl;
         
-            if (pvActuel <= 0) {
-                cout << pokemons[indexActuel].getNom() << " est K.O. !" << endl;
-                pokemons[indexActuel].unsummon();
+            if (PV <= 0) {
+                actif.unsummon();
+                
         
                 indexActuel++;
                 if (indexActuel < 6) {
                     cout << "Le prochain Pokémon entre en combat !" << endl;
+                    actif = pokemons[indexActuel];
+                    summon2(actif);
                 } else {
                     cout << "Tous les Pokémon de " << nomEntraineur << " sont K.O. !" << endl;
                 }
