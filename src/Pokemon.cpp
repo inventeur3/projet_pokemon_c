@@ -13,6 +13,7 @@ class Pokemon{
 		int degats;
 		string* faiblesses;
 		string* resistances;
+		string message;
 		void SetFaibRes(string t1, string t2){
 			int nbF1 = 0;
 			int nbF2 = 0;
@@ -480,7 +481,7 @@ class Pokemon{
 			r2 = nullptr;
 		}
 	public:
-		Pokemon(string nom, string t1, string t2, int maxPV, string nomA, int nbDeg){
+		Pokemon(string nom, string t1, string t2, int maxPV, string nomA, int nbDeg, string mes){
 			name = nom;
 			type1 = t1;
 			type2 = t2;
@@ -488,6 +489,7 @@ class Pokemon{
 			attaque = nomA;
 			degats = nbDeg;
 			setFaibRes(t1, t2);
+			message = mes;
 		}
 		~Pokemon(){
 			delete[] faiblesses;
@@ -524,6 +526,9 @@ class Pokemon{
 		}
 		void unsummon(){
 			cout << name << " est K.O. !" << endl;
+		}
+		void Interagir(){
+			cout << message << endl;
 		}
 }
 
