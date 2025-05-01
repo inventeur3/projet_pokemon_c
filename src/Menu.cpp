@@ -11,13 +11,14 @@ vector<Leader> initialiserLeaders() {
     vector<Leader> leaders;
 
     for (int i = 1; i <= 4; ++i) {
-        Pokemon p1("Pikachu", "Electrik", "", "Tonnerre", 100, 30, {"Sol"}, {"Acier"});
+        Pokemon p1("Pikachu", "Electrik", "", "Tonnerre", 100, 30, {"Sol"}, {"Acier"}); // nom/type1/type2/attaque/PV/dégats/faiblesses/résistances
         Pokemon p2("Salameche", "Feu", "", "Flammeche", 90, 25, {"Eau", "Roche"}, {"Plante"});
         Pokemon p3("Carapuce", "Eau", "", "Pistolet à O", 95, 28, {"Electrik"}, {"Feu"});
         Pokemon p4("Bulbizarre", "Plante", "", "Fouet Lianes", 92, 26, {"Feu", "Glace"}, {"Eau"});
         Pokemon p5("Rondoudou", "Fée", "", "Berceuse", 85, 20, {"Acier"}, {"Ténèbres"});
         Pokemon p6("Draco", "Dragon", "", "Draco-Rage", 100, 32, {"Fée", "Glace"}, {"Feu"});
 
+        // Ajout du leader avec son équipe, arène et médaille
         leaders.emplace_back("Leader" + to_string(i),
                              p1, p2, p3, p4, p5, p6,
                              "Arène" + to_string(i), "Badge" + to_string(i));
