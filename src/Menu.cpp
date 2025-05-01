@@ -2,13 +2,14 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-
 using namespace std;
+
+// À faire : inclure ou déclarer la classe Pokemon ici
 
 // Simuler 4 leaders
 vector<Leader> initialiserLeaders() {
     vector<Leader> leaders;
-    // Crée 4 leaders fictifs avec des Pokémon de test
+
     for (int i = 1; i <= 4; ++i) {
         Pokemon p1("Pikachu", "Electrik", "", "Tonnerre", 100, 30, {"Sol"}, {"Acier"});
         Pokemon p2("Salameche", "Feu", "", "Flammeche", 90, 25, {"Eau", "Roche"}, {"Plante"});
@@ -17,10 +18,25 @@ vector<Leader> initialiserLeaders() {
         Pokemon p5("Rondoudou", "Fée", "", "Berceuse", 85, 20, {"Acier"}, {"Ténèbres"});
         Pokemon p6("Draco", "Dragon", "", "Draco-Rage", 100, 32, {"Fée", "Glace"}, {"Feu"});
 
-        leaders.push_back(Leader("Leader" + to_string(i), "PokéX", "TypeX", "TypeY", "", 100, 30, "Feu", "Eau", 
-                                 p1, p2, p3, p4, p5, p6, "Arène" + to_string(i), "Badge" + to_string(i)));
+        leaders.emplace_back("Leader" + to_string(i),
+                             p1, p2, p3, p4, p5, p6,
+                             "Arène" + to_string(i), "Badge" + to_string(i));
     }
     return leaders;
+}
+
+vector<Maitre> initialiserMaitres() {
+    vector<Maitre> maitres;
+
+    Pokemon p1("Dracaufeu", "Feu", "Vol", "Lance-Flammes", 120, 40, {"Eau"}, {"Plante"});
+    Pokemon p2("Tortank", "Eau", "", "Hydrocanon", 130, 42, {"Plante"}, {"Feu"});
+    Pokemon p3("Florizarre", "Plante", "Poison", "Canon Graine", 125, 38, {"Feu"}, {"Eau"});
+    Pokemon p4("Ectoplasma", "Spectre", "Poison", "Ball'Ombre", 110, 35, {"Spectre"}, {"Psy"});
+    Pokemon p5("Ronflex", "Normal", "", "Plaquage", 150, 30, {"Combat"}, {});
+    Pokemon p6("Drattak", "Dragon", "Vol", "Draco-Météore", 140, 50, {"Fée"}, {"Feu"});
+
+    maitres.emplace_back("Maitre Ultime", p1, p2, p3, p4, p5, p6);
+    return maitres;
 }
 
 void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& maitres) {
@@ -43,16 +59,14 @@ void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& mai
                 cout << "\n--- Pokémon du joueur ---" << endl;
                 for (int i = 0; i < 6; ++i) {
                     cout << i + 1 << ". ";
-                    joueur.getPokemon(i).afficher();  // méthode à implémenter dans ta classe Pokemon
+                    joueur.getPokemon(i).afficher();
                     cout << endl;
                 }
                 break;
 
             case 2:
-                cout << "\n--- Récupération des PV ---" << endl;
-                for (int i = 0; i < 6; ++i) {
-                    joueur.getPokemon(i).setPV(joueur.getPokemon(i).getPVmax());  // méthode à prévoir
-                }
+                for (int i = 0; i < 6; ++i)
+                    joueur.getPokemon(i).setPV(joueur.getPokemon(i).getPVmax());
                 cout << "Tous les Pokémon ont récupéré leurs PV." << endl;
                 break;
 
@@ -61,23 +75,21 @@ void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& mai
                 break;
 
             case 4:
-                cout << "\n--- Statistiques du joueur ---" << endl;
-                cout << "Nom : " << joueur.getNomEntraineur() << endl;
+                cout << "\nNom : " << joueur.getNomEntraineur() << endl;
                 cout << "Badges : " << joueur.getBadges() << endl;
-                cout << "Combats gagnés : " << joueur.getCombatsGagnes() << endl;
-                cout << "Combats perdus : " << joueur.getCombatsPerdus() << endl;
+                cout << "Victoires : " << joueur.getCombatsGagnes() << endl;
+                cout << "Défaites : " << joueur.getCombatsPerdus() << endl;
                 break;
 
             case 5: {
-                cout << "\n--- Choisissez un leader à affronter ---" << endl;
-                for (int i = 0; i < leaders.size(); ++i) {
-                    cout << i + 1 << ". " << leaders[i].getNomEntraineur() << " - " << leaders[i].getGymnase() << endl;
-                }
+                cout << "\n--- Choisissez un leader ---" << endl;
+                for (int i = 0; i < leaders.size(); ++i)
+                    cout << i + 1 << ". " << leaders[i].getNomEntraineur()
+                         << " - " << leaders[i].getGymnase() << endl;
                 int choixLeader;
                 cout << "Votre choix : ";
                 cin >> choixLeader;
                 if (choixLeader >= 1 && choixLeader <= leaders.size()) {
-                    cout << "\nCombat contre le leader " << leaders[choixLeader - 1].getNomEntraineur() << " commence !" << endl;
                     joueur.attaque(leaders[choixLeader - 1]);
                     leaders[choixLeader - 1].receivedDamage(joueur);
                     joueur.demanderMedaille(leaders[choixLeader - 1]);
@@ -89,9 +101,9 @@ void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& mai
 
             case 6: {
                 if (joueur.getBadges() < 4) {
-                    cout << "Vous devez d’abord obtenir 4 badges pour affronter un Maître." << endl;
+                    cout << "Vous devez obtenir 4 badges pour affronter un Maître." << endl;
                 } else {
-                    srand(time(0));
+                    srand(static_cast<unsigned>(time(0)));
                     int index = rand() % maitres.size();
                     cout << "Vous affrontez le Maître : " << maitres[index].getNomEntraineur() << endl;
                     maitres[index].affronterMaitre(joueur, maitres[index]);
@@ -100,8 +112,7 @@ void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& mai
             }
 
             case 7:
-                cout << "\n--- Interaction simple ---" << endl;
-                cout << "Vous discutez avec vos Pokémon. Ils semblent en forme et motivés !" << endl;
+                cout << "Vos Pokémon sont heureux de vous voir !" << endl;
                 break;
 
             case 0:
@@ -111,13 +122,8 @@ void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& mai
             default:
                 cout << "Choix invalide." << endl;
         }
-
     } while (choix != 0);
 }
-
-
-
-
 
 
 
