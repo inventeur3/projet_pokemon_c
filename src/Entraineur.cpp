@@ -11,7 +11,7 @@ protected:
     Pokemon* actif = nullptr;
     Pokemon* pokemons = new Pokemon[6];
     int indexActuel;
-    int nbPokemons = 0; // Nombre réel de Pokémon disponibles
+    int nbPokemons = 0;
 
 public:
     Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4,
