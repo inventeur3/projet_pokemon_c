@@ -54,7 +54,7 @@ public:
     string getType2() const { return actif->getType2(); }
 
     void attaque(Entraineur& cible) {
-        cout << actif->getNom() << " attaque " << cible.actif->getNom() << " avec " << actif->getAttaque() << "." << endl;
+        cout << *actif.getNom() << " attaque " << cible.*actif.getNom() << " avec " << *actif.getAttaque() << "." << endl;
         cible.receivedDamage(*this);
     }
 
