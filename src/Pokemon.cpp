@@ -14,6 +14,7 @@ class Pokemon{
 		string* faiblesses;
 		string* resistances;
 		string message;
+		bool valid;
 		void SetFaibRes(string t1, string t2){
 			int nbF1 = 0;
 			int nbF2 = 0;
@@ -239,6 +240,9 @@ class Pokemon{
 			else{
 				f1 = new string[0];
 				r1 = new string[0];
+				if (t1 != "Normal"){
+					valid = false;
+				}
 			}
 			if (t2 == "Feu"){
                                 nbF2 = 3;
@@ -453,10 +457,15 @@ class Pokemon{
                                 r2[2] = "Ténèbres";
                                 r2[3] = "Dragon";
                         }
-                        else{
+                        else if (t2 == "" or t2 == "Normal"){
                                 f2 = new string[0];
                                 r2 = new string[0];
                         }
+			else{
+                                r2 = new string[0];
+                                f2 = new string[0];
+				valid = false;
+			}
 			faiblesses = new string[nbF1 + nbF2];
 			resistances = new string[nbR1 + nbR2];
 			for (int i = 0; i < nbF1; i++){
@@ -488,8 +497,9 @@ class Pokemon{
 			PVmax = maxPV;
 			attaque = nomA;
 			degats = nbDeg;
-			setFaibRes(t1, t2);
 			message = mes;
+			valid = (nom != "" and maxPPPV > 0 and nomA != "" and nbDeg > 0 and mes != "");
+			setFaibRes(t1, t2);
 		}
 		~Pokemon(){
 			delete[] faiblesses;
@@ -530,5 +540,7 @@ class Pokemon{
 		void Interagir(){
 			cout << message << endl;
 		}
+		bool estValide(){
+			return valid;
+		}
 }
-
