@@ -12,6 +12,7 @@ protected:
     Pokemon* pokemons = new Pokemon[6];
     int indexActuel;
     int nbPokemons = 0;
+    bool victoire;
 
 public:
     Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4,
@@ -96,12 +97,14 @@ public:
     }
 
     void finCombat() {
-    cout << "Le combat est terminé !" << endl;
+        victoire=true;
+        
+        cout << NomEntr    aineur<<" est vaincu" << endl;
     }
 
     string getNomEntraineur() const {
-            return nomEntraineur;
-        }
+        return nomEntraineur;
+    }
 };
 
 
@@ -123,6 +126,7 @@ class Joueur : public Entraineur {
             nbBadges = 0;
             nbCombatsGagnes = 0;
             nbCombatsPerdus = 0;
+            victoire=false;
         }
     
         // Accesseurs
@@ -147,7 +151,7 @@ class Joueur : public Entraineur {
             bool dejaVu[6] = {false, false, false, false, false, false};
         
             for (int i = 0; i < nbPokemons; i++) {
-                if (nouvelOrdre[i] < 1 || nouvelOrdre[i] > 6 || dejaVu[nouvelOrdre[i] - 1]) {
+                if (nouvelOrdre[i] < 1 || nouvelOrdre[i] > nbPokemons || dejaVu[nouvelOrdre[i] - 1]) {
                     valide = false;
                     break;
                 }
@@ -164,7 +168,7 @@ class Joueur : public Entraineur {
                 }
                 cout << "L'ordre a été mis à jour avec succès !" << endl;
             } else {
-                cout << "Ordre invalide. Assurez-vous d'utiliser les numéros de 1 à 6 sans doublons." << endl;
+                cout << "Ordre invalide. Assurez-vous d'utiliser les numéros de 1 à "<<nbPokemons<<" sans doublons." << endl;
             }
         
             cout << "Nouvel ordre des Pokémon :" << endl;
@@ -195,7 +199,6 @@ class Leader : public Entraineur {
     private:
         string gymnase;
         string medaille;
-        int victoire;
         string badgeAccorde;
     
     public:
