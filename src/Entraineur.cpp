@@ -14,9 +14,11 @@ protected:
     int nbPokemons = 0;
     bool victoire;
 
+    string message;
+
 public:
     Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4,
-               Pokemon poke5, Pokemon poke6) {
+               Pokemon poke5, Pokemon poke6, string mes) {
         nomEntraineur = n1;
         if (poke1.estValide()) pokemons[nbPokemons++] = poke1;
         if (poke2.estValide()) pokemons[nbPokemons++] = poke2;
@@ -25,6 +27,7 @@ public:
         if (poke5.estValide()) pokemons[nbPokemons++] = poke5;
         if (poke6.estValide()) pokemons[nbPokemons++] = poke6;
         indexActuel = 0;
+        message=mes;
     }
 
     ~Entraineur() {
@@ -34,6 +37,8 @@ public:
         actif = nullptr;
     }
 
+    
+    
 
     void entrantEnCombat() {
         indexActuel = 0;
@@ -99,12 +104,19 @@ public:
     void finCombat() {
         victoire=true;
         
-        cout << NomEntr    aineur<<" est vaincu" << endl;
+        cout << nomEntraineur<<" est vaincu!" << endl;
     }
 
     string getNomEntraineur() const {
         return nomEntraineur;
     }
+
+    bool interagir(){
+            if (victoire){
+                cout<<message<<endl;
+            }
+            return false;
+        }
 };
 
 
@@ -113,26 +125,27 @@ class Joueur : public Entraineur {
         int nbBadges;
         int nbCombatsGagnes;
         int nbCombatsPerdus;
-        //modificateurs
-        void ajouterBadge() { nbBadges++; }
-        void ajouterVictoire() { nbCombatsGagnes++; }
-        void ajouterDefaite() { nbCombatsPerdus++; }
+        
     
     public:
         Joueur(string n1, 
                Pokemon poke1, Pokemon poke2, Pokemon poke3,
                Pokemon poke4, Pokemon poke5, Pokemon poke6)
-            : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6) {
+            : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6, mes) {
             nbBadges = 0;
             nbCombatsGagnes = 0;
             nbCombatsPerdus = 0;
             victoire=false;
         }
     
-        // Accesseurs
-        int getBadges() const { return nbBadges; }
+        // Acceint getBadges() const { return nbBadges; }
         int getCombatsGagnes() const { return nbCombatsGagnes; }
         int getCombatsPerdus() const { return nbCombatsPerdus; }
+
+        //modificateurs
+        void ajouterBadge() { nbBadges++; }
+        void ajouterVictoire() { nbCombatsGagnes++; }
+        void ajouterDefaite() { nbCombatsPerdus++; }
 
         void ordre() {
             cout << "Ordre actuel des Pokémon :" << endl;
@@ -140,7 +153,7 @@ class Joueur : public Entraineur {
                 cout << i + 1 << ". " << pokemons[i].getNom() << endl;
             }
         
-            cout << "Entrez le nouvel ordre des Pokémon (" << nbPokemons << " numéros entre 1 et " << nbPokemons << ", séparés par des espaces) : ";
+            cout << "Entrez le nouvel ordre des Pokémon (" << nbPokemons << " numéros entre 1 et " << nbPokemons << ", séparés par des espaces) : "<<endl;
             int nouvelOrdre[nbPokemons];
             for (int i = 0; i < nbPokemons; i++) {
                 cin >> nouvelOrdre[i];
@@ -176,21 +189,19 @@ class Joueur : public Entraineur {
                 cout << i + 1 << ". " << pokemons[i].getNom() << endl;
             }
         }
-        
-        void demanderMedaille(Leader& leader) {
-            static vector<string> medaillesObtenues;
-            string medaille = leader.getMedaille();
 
-            cout << nomEntraineur << " a gagné contre le leader !" << endl;
-
-            if (find(medaillesObtenues.begin(), medaillesObtenues.end(), medaille) != medaillesObtenues.end()) {
-                cout << "Cette médaille a déjà été obtenue. Elle ne peut pas être reçue deux fois." << endl;
-            } else {
-                cout << "Il reçoit la médaille : " << medaille << endl;
-                medaillesObtenues.push_back(medaille);
+        bool interagir(Entraineur& entraineur){
+            if (entraineur.interagir(*this)){
                 ajouterBadge();
-                }
-    }   
+            }
+        }
+
+        void afficher(){
+            for (int i = 0; i < nbPokemons; i++){
+                cout << "Pokémon " << i+1 << " : " << endl;
+                Pokemons[i].afficher();
+            }
+        }
 };
 
 
@@ -199,18 +210,17 @@ class Leader : public Entraineur {
     private:
         string gymnase;
         string medaille;
-        string badgeAccorde;
+        bool badgeAccorde;
     
     public:
         Leader(string n1,
                 Pokemon poke1, Pokemon poke2, Pokemon poke3,
                 Pokemon poke4, Pokemon poke5, Pokemon poke6,
-                string nomGym, string badge, string badgeAccorde)
-            : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6) {
+                string nomGym, string badge)
+            : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6, mes) {
             gymnase = nomGym;
             medaille = badge;
-            this->badgeAccorde = badgeAccorde;
-            victoire=0;
+            badgeAccorde = false;
         }
     
         string getGymnase() const {
@@ -222,18 +232,31 @@ class Leader : public Entraineur {
         }
 
         void accorderMedaille(Joueur& joueur) {
-            victoire++;
             cout << nomEntraineur << " remet la médaille " << medaille
                  << " à " << joueur.getNomEntraineur() << "." << endl;
-            cout << "Il s'agit de la médaille spéciale : " << badgeAccorde << "." << endl;
-        }      
+        }  
+
+        bool interagir(Joueur& joueur) {
+            bool a = (victoire and !baddgeAccorde);
+            if (victoire) {
+                if (!badgeAccorde) {  // vérifier si le joueur a déjà cette médaille
+                    accorderMedaille(joueur);
+                    joueur.ajouterMedaille();
+                    badgeAccorde = true;
+                }
+                cout << message << endl;
+            }
+            return (a);
+        }
+
+    
 };
 
 class Maitre : public Entraineur {
     public:
         Maitre(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3,
                Pokemon poke4, Pokemon poke5, Pokemon poke6)
-            : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6) {}
+            : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6, mes) {}
     
 
         int getDegatBoosted() const {
