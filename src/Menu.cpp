@@ -4,7 +4,6 @@
 #include <ctime>
 using namespace std;
 
-// À faire : inclure ou déclarer la classe Pokemon ici
 
 // Simuler 4 leaders
 vector<Leader> initialiserLeaders() {
@@ -40,12 +39,10 @@ vector<Maitre> initialiserMaitres() {
     return maitres;
 }
 void afficherPokemons(){
-    for (int i = 0; i < 6; ++i) {
-                    cout << i + 1 << ". ";
-                    joueur.getPokemon(i).afficher();
-                    cout << endl;
-}
-    cin >>    
+    joueur.afficher();
+    cout << "0 pour retourner au Menu, 1 pour changer l'ordre" << endl;
+    int a;
+    cin >> a;
 }
 
 void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& maitres) {
