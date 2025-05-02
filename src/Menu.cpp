@@ -39,18 +39,26 @@ vector<Maitre> initialiserMaitres() {
     maitres.emplace_back("Maitre Ultime", p1, p2, p3, p4, p5, p6);
     return maitres;
 }
+void afficherPokemons(){
+    for (int i = 0; i < 6; ++i) {
+                    cout << i + 1 << ". ";
+                    joueur.getPokemon(i).afficher();
+                    cout << endl;
+}
+    cin >>    
+}
 
 void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& maitres) {
     int choix;
     do {
         cout << "\n========= MENU DE SIMULATION =========" << endl;
-        cout << "1. Afficher les Pokémon et leurs attributs" << endl;
-        cout << "2. Récupérer les points de vie des Pokémon" << endl;
-        cout << "3. Changer l’ordre des Pokémon" << endl;
+        cout << "1. Afficher les Pokémons et leurs attributs" << endl;
+        cout << "2. Récupérer les points de vie des Pokémons" << endl;
+        cout << "3. Changer l’ordre des Pokémons" << endl;
         cout << "4. Afficher les statistiques du joueur" << endl;
         cout << "5. Affronter un leader de gymnase" << endl;
         cout << "6. Affronter un Maître Pokémon" << endl;
-        cout << "7. Interagir avec les Pokémon ou entraîneurs vaincus" << endl;
+        cout << "7. Interagir avec les Pokémons ou entraîneurs vaincus" << endl;
         cout << "0. Quitter" << endl;
         cout << "Choix : ";
         cin >> choix;
@@ -113,7 +121,7 @@ void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& mai
             }
 
             case 7:
-                cout << "Vos Pokémon sont heureux de vous voir !" << endl;
+                cout << "Vos Pokémons sont heureux de vous voir !" << endl;
                 break;
 
             case 0:
