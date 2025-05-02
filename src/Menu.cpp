@@ -43,6 +43,15 @@ void afficherPokemons(){
     cout << "0 pour retourner au Menu, 1 pour changer l'ordre" << endl;
     int a;
     cin >> a;
+    if (a == 0) {
+        joueur.menuSimulation();
+        }
+        if else (a == 1) {
+        joueur.ordre();
+        }
+        else {
+            cout<< "prenez bien un chiffre entre 0 et 1" <<endl;
+        }   
 }
 
 void menuSimulation(Joueur& joueur, vector<Leader>& leaders, vector<Maitre>& maitres) {
