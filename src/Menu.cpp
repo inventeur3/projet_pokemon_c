@@ -4,7 +4,6 @@
 #include <ctime>
 using namespace std;
 
-// À faire : inclure ou déclarer la classe Pokemon ici
 
 // Simuler 4 leaders
 vector<Leader> initialiserLeaders() {
