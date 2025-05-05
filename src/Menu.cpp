@@ -2,6 +2,7 @@
 
 // modifications à faire dans le menu : 
 //getpokemon
+//
 
 #include <vector>
 #include <cstdlib>
@@ -13,6 +14,11 @@ using namespace std;
 void Combat(Joueur j, Entraineur e){
     j.entrantEnCombat();
     e.entrantEnCombat();
+    while(a and b){
+        j.attaque(e);
+        if (b)
+            e.attaque(j);
+    }
 }
 
 
