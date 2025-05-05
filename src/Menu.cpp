@@ -1,9 +1,16 @@
 #include <iostream>
-using namespace std;
 
 // modifications à faire dans le menu : 
 // getpokemon
 // 
+
+
+
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
 
 
 void afficherMenu() {
@@ -21,12 +28,13 @@ void afficherMenu() {
 }
 
 int main() {
-    Joueur joueur("Red", , , , , , );  // À instancier correctement avec tes Pokémons
+    Joueur joueur("Red", poke1, poke2, poke3, poke4, poke5, poke6);  // À instancier correctement avec tes Pokémon
     Leader leader1("Pierre", "Argenta", "Roche", "Racaillou", "Onix", "Gravalanch", "Grolem", "Rhinocorne", "Rhinoféros");  // Compléter avec les Pokémons et gymnase
     Leader leader2("Ondine", "Azuria","Cascade","Carabaffe","Akwakwak","Tentacruel","Poissoroy","Lamantine", "Lokhlass");
     Leader leader3("Major Bob","Carmin sur Mer","Foudre","Raichu","Magnéton","Électrode","Voltali","Élektek", "Électhor");
     Leader leader4("Erika", "Céladopole","Prisme","Ortide","Parasect","Empiflor","Rafflesia","Saquedeneu","Noadkoko");
     Maitre maitre("Mewtwo", "Dracolosse", "Lokhlass", "Arcanin", "Rhinoféros", "Électhor");
+
 
     int choix;
     bool continuer = true;
@@ -47,10 +55,9 @@ int main() {
             case 3:
                 joueur.ordre();
                 break;
-            case 4:
-                cout << "Les PV de tous vos Pokémon ont été restaurés." << endl;
+          case 4:
                 for (int i = 0; i < 6; i++) {
-                    joueur.getPV(i);
+                    cout << " Le Pokémon " << i << " a " << joueur.getPokemon(i).getPVmax() <<" PV en tout." << endl;
                 }
                 break;
             case 5: {
@@ -111,7 +118,6 @@ int main() {
     }
     return 0;
 }
-
 
 
 
