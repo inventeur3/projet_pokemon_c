@@ -18,7 +18,7 @@ protected:
 
 public:
     Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4,
-               Pokemon poke5, Pokemon poke6, string mes) {
+               Pokemon poke5, Pokemon poke6, string mes = '') {
         nomEntraineur = n1;
         if (poke1.estValide()) pokemons[nbPokemons++] = poke1;
         if (poke2.estValide()) pokemons[nbPokemons++] = poke2;
@@ -125,13 +125,18 @@ class Joueur : public Entraineur {
         int nbBadges;
         int nbCombatsGagnes;
         int nbCombatsPerdus;
+
+        //modificateurs
+        void ajouterBadge() { nbBadges++; }
+        void ajouterVictoire() { nbCombatsGagnes++; }
+        void ajouterDefaite() { nbCombatsPerdus++; }
         
     
     public:
         Joueur(string n1, 
                Pokemon poke1, Pokemon poke2, Pokemon poke3,
                Pokemon poke4, Pokemon poke5, Pokemon poke6)
-            : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6, mes) {
+            : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6) {
             nbBadges = 0;
             nbCombatsGagnes = 0;
             nbCombatsPerdus = 0;
@@ -141,11 +146,6 @@ class Joueur : public Entraineur {
         // Acceint getBadges() const { return nbBadges; }
         int getCombatsGagnes() const { return nbCombatsGagnes; }
         int getCombatsPerdus() const { return nbCombatsPerdus; }
-
-        //modificateurs
-        void ajouterBadge() { nbBadges++; }
-        void ajouterVictoire() { nbCombatsGagnes++; }
-        void ajouterDefaite() { nbCombatsPerdus++; }
 
         void ordre() {
             cout << "Ordre actuel des Pokémon :" << endl;
@@ -213,10 +213,9 @@ class Leader : public Entraineur {
         bool badgeAccorde;
     
     public:
-        Leader(string n1,
+        Leader(string n1,string nomGym,string badge
                 Pokemon poke1, Pokemon poke2, Pokemon poke3,
-                Pokemon poke4, Pokemon poke5, Pokemon poke6,
-                string nomGym, string badge)
+                Pokemon poke4, Pokemon poke5, Pokemon poke6, string mes="")
             : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6, mes) {
             gymnase = nomGym;
             medaille = badge;
@@ -255,7 +254,7 @@ class Leader : public Entraineur {
 class Maitre : public Entraineur {
     public:
         Maitre(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3,
-               Pokemon poke4, Pokemon poke5, Pokemon poke6)
+               Pokemon poke4, Pokemon poke5, Pokemon poke6, string mes= "")
             : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6, mes) {}
     
 
