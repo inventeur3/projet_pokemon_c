@@ -159,12 +159,12 @@ void afficherMenu() {
 }
 
 int main() {
-    Joueur joueur("Red", poke1, poke2, poke3, poke4, poke5, poke6);  // À instancier correctement avec tes Pokémon
-    Leader leader1("Pierre", ...);  // Compléter avec les Pokémon et gymnase
-    Leader leader2("Ondine", ...);
-    Leader leader3("Major Bob", ...);
-    Leader leader4("Erika", ...);
-    Maitre maitre("Blue", ...);
+    Joueur joueur("Red", , , , , , );  // À instancier correctement avec tes Pokémon
+    Leader leader1("Pierre", "Argenta", "Roche", "Racaillou", "Onix", "Gravalanch", "Grolem", "Rhinocorne", "Rhinoféros");  // Compléter avec les Pokémon et gymnase
+    Leader leader2("Ondine", "Azuria","Cascade","Carabaffe","Akwakwak","Tentacruel","Poissoroy","Lamantine", "Lokhlass");
+    Leader leader3("Major Bob","Carmin sur Mer","Foudre","Raichu","Magnéton","Électrode","Voltali","Élektek", "Électhor");
+    Leader leader4("Erika", "Céladopole","Prisme","Ortide","Parasect","Empiflor","Rafflesia","Saquedeneu","Noadkoko");
+    Maitre maitre("Mewtwo", "Dracolosse", "Lokhlass", "Arcanin", "Rhinoféros", "Électhor");
 
     int choix;
     bool continuer = true;
