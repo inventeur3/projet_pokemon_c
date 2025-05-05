@@ -159,8 +159,8 @@ void afficherMenu() {
 }
 
 int main() {
-    Joueur joueur("Red", , , , , , );  // À instancier correctement avec tes Pokémon
-    Leader leader1("Pierre", "Argenta", "Roche", "Racaillou", "Onix", "Gravalanch", "Grolem", "Rhinocorne", "Rhinoféros");  // Compléter avec les Pokémon et gymnase
+    Joueur joueur("Red", , , , , , );  // À instancier correctement avec tes Pokémons
+    Leader leader1("Pierre", "Argenta", "Roche", "Racaillou", "Onix", "Gravalanch", "Grolem", "Rhinocorne", "Rhinoféros");  // Compléter avec les Pokémons et gymnase
     Leader leader2("Ondine", "Azuria","Cascade","Carabaffe","Akwakwak","Tentacruel","Poissoroy","Lamantine", "Lokhlass");
     Leader leader3("Major Bob","Carmin sur Mer","Foudre","Raichu","Magnéton","Électrode","Voltali","Élektek", "Électhor");
     Leader leader4("Erika", "Céladopole","Prisme","Ortide","Parasect","Empiflor","Rafflesia","Saquedeneu","Noadkoko");
@@ -189,7 +189,7 @@ int main() {
                 cout << "Les PV de tous vos Pokémon ont été restaurés." << endl;
                 // On restaure la vie des Pokémon
                 for (int i = 0; i < 6; i++) {
-                    joueur.getPokemon(i).soigner();  // ajouter une méthode soigner() dans Pokemon si besoin
+                    joueur.getPV(i);
                 }
                 break;
             case 5: {
