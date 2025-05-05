@@ -125,6 +125,11 @@ class Joueur : public Entraineur {
         int nbBadges;
         int nbCombatsGagnes;
         int nbCombatsPerdus;
+
+        //modificateurs
+        void ajouterBadge() { nbBadges++; }
+        void ajouterVictoire() { nbCombatsGagnes++; }
+        void ajouterDefaite() { nbCombatsPerdus++; }
         
     
     public:
@@ -141,11 +146,6 @@ class Joueur : public Entraineur {
         // Acceint getBadges() const { return nbBadges; }
         int getCombatsGagnes() const { return nbCombatsGagnes; }
         int getCombatsPerdus() const { return nbCombatsPerdus; }
-
-        //modificateurs
-        void ajouterBadge() { nbBadges++; }
-        void ajouterVictoire() { nbCombatsGagnes++; }
-        void ajouterDefaite() { nbCombatsPerdus++; }
 
         void ordre() {
             cout << "Ordre actuel des Pokémon :" << endl;
