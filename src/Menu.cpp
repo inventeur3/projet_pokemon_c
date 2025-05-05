@@ -1,6 +1,11 @@
 #include <iostream>
 using namespace std;
 
+// modifications à faire dans le menu : 
+// getpokemon
+// 
+
+
 void afficherMenu() {
     cout << "\n=== MENU PRINCIPAL ===" << endl;
     cout << "1. Afficher les Pokémon et leurs attributs" << endl;
@@ -44,7 +49,6 @@ int main() {
                 break;
             case 4:
                 cout << "Les PV de tous vos Pokémon ont été restaurés." << endl;
-                // On restaure la vie des Pokémon
                 for (int i = 0; i < 6; i++) {
                     joueur.getPV(i);
                 }
