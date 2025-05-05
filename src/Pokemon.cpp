@@ -543,4 +543,10 @@ class Pokemon{
 		bool estValide(){
 			return valid;
 		}
+		void affiche(){
+			cout << "    Nom du Pokémon : " << name << endl;
+			cout << "    Types          : " << type1 << "/" << type2 << endl;
+			cout << "    PV             : " << PVmax << endl;
+			cout << "    Attaque/dégâts : " << attaque << "/" << degats << endl;
+		}
 }
