@@ -5,10 +5,10 @@ class Entraineur {
 protected:
     string nomEntraineur;
     int PV;
-    Pokemon* actif = nullptr;
-    Pokemon* pokemons = new Pokemon[6];
+    Pokemon* actif;
+    Pokemon* pokemons;
     int indexActuel;
-    int nbPokemons = 0;
+    int nbPokemons;
     bool victoire;
 
     string message;
@@ -17,6 +17,8 @@ public:
     Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4,
                Pokemon poke5, Pokemon poke6, string mes = '') {
         nomEntraineur = n1;
+	pokemons = new Pokemon[6];
+	nbPokemons = 0;
         if (poke1.estValide()) pokemons[nbPokemons++] = poke1;
         if (poke2.estValide()) pokemons[nbPokemons++] = poke2;
         if (poke3.estValide()) pokemons[nbPokemons++] = poke3;
@@ -24,6 +26,7 @@ public:
         if (poke5.estValide()) pokemons[nbPokemons++] = poke5;
         if (poke6.estValide()) pokemons[nbPokemons++] = poke6;
         indexActuel = 0;
+	actif = nullptr;
         message=mes;
 	victoire = false;
     }
