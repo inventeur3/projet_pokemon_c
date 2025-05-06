@@ -1,0 +1,30 @@
+# Nom de l'exécutable
+EXEC = jeu
+
+# Liste des fichiers sources
+SRC = Pokemon.cpp Entraineur.cpp Menu.cpp
+
+# Liste des fichiers objets
+OBJ = $(SRC:.cpp=.o)
+
+# Compilateur et options
+CXX = g++
+CXXFLAGS = -Wall -std=c++11
+
+# Règle principale
+all: $(EXEC)
+
+# Construction de l'exécutable
+$(EXEC): $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Compilation des fichiers .cpp en .o
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $<
+
+# Nettoyage
+clean:
+	rm -f $(OBJ) $(EXEC)
+
+# Nettoyage complet
+mrproper: clean
