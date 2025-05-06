@@ -3,6 +3,7 @@
 // modifications à faire dans le menu : 
 //getpokemon
 //
+#include "Menu.h"
 
 #include <vector>
 #include <cstdlib>
