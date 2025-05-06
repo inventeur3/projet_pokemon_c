@@ -1,10 +1,8 @@
 #include <iostream>
 
 // modifications à faire dans le menu : 
-// getpokemon
-// 
-
-
+//getpokemon
+//
 
 #include <vector>
 #include <cstdlib>
@@ -13,12 +11,24 @@
 using namespace std;
 
 
+void Combat(Joueur j, Entraineur e){
+    j.entrantEnCombat();
+    e.entrantEnCombat();
+    while(a and b){
+        j.attaque(e);
+        if (b)
+            e.attaque(j);
+    }
+}
+
+
+
 void afficherMenu() {
     cout << "\n=== MENU PRINCIPAL ===" << endl;
-    cout << "1. Afficher les Pokémon et leurs attributs" << endl;
+    cout << "1. Afficher les Pokémons et leurs attributs" << endl;
     cout << "2. Afficher les statistiques du joueur" << endl;
-    cout << "3. Changer l'ordre des Pokémon" << endl;
-    cout << "4. Récupérer les points de vie des Pokémon" << endl;
+    cout << "3. Changer l'ordre des Pokémons" << endl;
+    cout << "4. Récupérer les points de vie des Pokémons" << endl;
     cout << "5. Affronter un leader de gymnase" << endl;
     cout << "6. Affronter le Maître Pokémon" << endl;
     cout << "7. Interagir avec les Pokémon" << endl;
@@ -75,7 +85,7 @@ int main() {
                     case 4: joueur.attaque(leader4); break;
                     default: cout << "Choix invalide." << endl;
                 }
-                break;
+                break;           
             }
             case 6:
                 maitre.affronterMaitre(joueur, maitre);

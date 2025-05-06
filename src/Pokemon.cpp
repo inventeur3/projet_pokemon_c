@@ -510,10 +510,10 @@ class Pokemon{
 		void Summon(){
 			cout << name << " est invoqué !" << endl;
 		}
-		int getPVmax{
+		int getPVmax(){
 			return PVmax;
 		}
-		string getNom{
+		string getNom(){
 			return name;
 		}
 		string getAttaque(){
@@ -525,7 +525,7 @@ class Pokemon{
 		string getType2(){
 			return type2;
 		}
-		string getDeg(){
+		int getDeg(){
 			return degats;
 		}
 		string* getFaib(){
@@ -543,7 +543,7 @@ class Pokemon{
 		bool estValide(){
 			return valid;
 		}
-		void affiche(){
+		void afficher(){
 			cout << "    Nom du Pokémon : " << name << endl;
 			cout << "    Types          : " << type1 << "/" << type2 << endl;
 			cout << "    PV             : " << PVmax << endl;
