@@ -25,6 +25,7 @@ public:
         if (poke6.estValide()) pokemons[nbPokemons++] = poke6;
         indexActuel = 0;
         message=mes;
+	victoire = false;
     }
 
     ~Entraineur() {
@@ -137,7 +138,6 @@ class Joueur : public Entraineur {
             nbBadges = 0;
             nbCombatsGagnes = 0;
             nbCombatsPerdus = 0;
-            victoire=false;
         }
     
         // Acceint getBadges() const { return nbBadges; }
