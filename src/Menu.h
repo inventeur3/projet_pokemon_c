@@ -1,11 +1,13 @@
+#endif // MENU_H
+
 #ifndef MENU_H
 #define MENU_H
 
-#include "Entraineur.h"
+#include "Entraineur.h" 
 #include "Pokemon.h"
 
-// Déclaration des fonctions utilisées dans Menu.cpp
+// Prototypes des fonctions du menu
+void Combat(Joueur& j, Entraineur& e);
 void afficherMenu();
-void Combat(Joueur j, Entraineur e);
 
 #endif // MENU_H
