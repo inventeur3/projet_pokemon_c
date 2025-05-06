@@ -202,7 +202,10 @@ class Joueur : public Entraineur {
                 Pokemons[i].afficher();
             }
         }
-};
+
+        Pokemon* getPokemon(int i){ return &Pokemons[i];}
+        
+
 
 
 
