@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-using nammespace std;
+using namespace std;
 
 class Entraineur;
 class Joueur;
