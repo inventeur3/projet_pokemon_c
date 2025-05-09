@@ -11,13 +11,19 @@
 using namespace std;
 
 
-void Combat(Joueur j, Entraineur e){
+void Combat(Joueur& j, Entraineur& e) {
     j.entrantEnCombat();
     e.entrantEnCombat();
-    while(a and b){
+    bool a = j.estCapableDeCombattre();  // Remplace 'a' par une méthode concrète
+    bool b = e.estCapableDeCombattre();  // Idem pour 'b'
+    
+    while (a && b) {
         j.attaque(e);
-        if (b)
+        b = e.estCapableDeCombattre();
+        if (b) {
             e.attaque(j);
+            a = j.estCapableDeCombattre();
+        }
     }
 }
 
