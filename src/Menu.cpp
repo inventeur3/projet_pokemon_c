@@ -2,27 +2,25 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include "Pokemon.h"
+#include "Entraineur.h"
 
 using namespace std;
-
 
 void Combat(Joueur& j, Entraineur& e) {
     j.entrantEnCombat();
     e.entrantEnCombat();
-    bool a = j.estCapableDeCombattre();  // Remplace 'a' par une méthode concrète
-    bool b = e.estCapableDeCombattre();  // Idem pour 'b'
-    
+    bool a = true; // tu devras remplacer par j.estCapableDeCombattre()
+    bool b = true; // idem pour e
     while (a && b) {
         j.attaque(e);
-        b = e.estCapableDeCombattre();
+        b = true;
         if (b) {
             e.attaque(j);
-            a = j.estCapableDeCombattre();
+            a = true;
         }
     }
 }
-
-
 
 void afficherMenu() {
     cout << "\n=== MENU PRINCIPAL ===" << endl;
@@ -39,21 +37,29 @@ void afficherMenu() {
 }
 
 int main() {
-    Joueur joueur("Red", poke1, poke2, poke3, poke4, poke5, poke6);  // À instancier correctement avec tes Pokémon
-    Leader leader1("Pierre", "Argenta", "Roche", "Racaillou", "Onix", "Gravalanch", "Grolem", "Rhinocorne", "Rhinoféros");  // Compléter avec les Pokémons et gymnase
-    Leader leader2("Ondine", "Azuria","Cascade","Carabaffe","Akwakwak","Tentacruel","Poissoroy","Lamantine", "Lokhlass");
-    Leader leader3("Major Bob","Carmin sur Mer","Foudre","Raichu","Magnéton","Électrode","Voltali","Élektek", "Électhor");
-    Leader leader4("Erika", "Céladopole","Prisme","Ortide","Parasect","Empiflor","Rafflesia","Saquedeneu","Noadkoko");
-    Maitre maitre("Mewtwo", "Dracolosse", "Lokhlass", "Arcanin", "Rhinoféros", "Électhor");
+    Pokemon poke1("Pikachu", "Électrik", "", 100, "Tonnerre", 50, "Pika!");
+    Pokemon poke2("Salameche", "Feu", "", 100, "Flammeche", 40, "Sala!");
+    Pokemon poke3("Bulbizarre", "Plante", "", 100, "Fouet Lianes", 40, "Buli!");
+    Pokemon poke4("Carapuce", "Eau", "", 100, "Pistolet à O", 40, "Cara!");
+    Pokemon poke5("Rondoudou", "Fée", "", 100, "Berceuse", 20, "Rondou!");
+    Pokemon poke6("Evoli", "Normal", "", 100, "Morsure", 30, "Evo!");
 
+    Joueur joueur("Red", poke1, poke2, poke3, poke4, poke5, poke6);
+
+    Pokemon racaillou("Racaillou", "Roche", "Sol", 100, "Jet-Pierres", 50, "Raca!");
+    Pokemon onix("Onix", "Roche", "Sol", 100, "Étreinte", 40, "Onix!");
+    Pokemon gravalanch("Gravalanch", "Roche", "Sol", 100, "Roulade", 40, "Grav!");
+    Pokemon grolem("Grolem", "Roche", "Sol", 100, "Séisme", 60, "Grol!");
+    Pokemon rhinocorne("Rhinocorne", "Sol", "Roche", 100, "Charge", 30, "Rhino!");
+    Pokemon rhinoféros("Rhinoféros", "Sol", "Roche", 100, "Cornes", 50, "Rhinof!");
+
+    Leader leader1("Pierre", "Argenta", "Roche", racaillou, onix, gravalanch, grolem, rhinocorne, rhinoféros);
 
     int choix;
     bool continuer = true;
-
     while (continuer) {
         afficherMenu();
         cin >> choix;
-
         switch (choix) {
             case 1:
                 joueur.afficher();
@@ -66,59 +72,30 @@ int main() {
             case 3:
                 joueur.ordre();
                 break;
-          case 4:
+            case 4:
                 for (int i = 0; i < 6; i++) {
-                    cout << " Le Pokémon " << i << " a " << joueur.getPokemon(i).getPVmax() <<" PV en tout." << endl;
+                    cout << "Le Pokémon " << i << " a " << joueur.getPokemon(i)->getPVmax() << " PV en tout." << endl;
                 }
                 break;
-            case 5: {
-                cout << "\nChoisissez un leader à affronter:" << endl;
-                cout << "1. " << leader1.getNomEntraineur() << " (" << leader1.getGymnase() << ")" << endl;
-                cout << "2. " << leader2.getNomEntraineur() << " (" << leader2.getGymnase() << ")" << endl;
-                cout << "3. " << leader3.getNomEntraineur() << " (" << leader3.getGymnase() << ")" << endl;
-                cout << "4. " << leader4.getNomEntraineur() << " (" << leader4.getGymnase() << ")" << endl;
-                int choixLeader;
-                cin >> choixLeader;
-                switch (choixLeader) {
-                    case 1: joueur.attaque(leader1); break;
-                    case 2: joueur.attaque(leader2); break;
-                    case 3: joueur.attaque(leader3); break;
-                    case 4: joueur.attaque(leader4); break;
-                    default: cout << "Choix invalide." << endl;
-                }
-                break;           
-            }
+            case 5:
+                joueur.attaque(leader1);
+                break;
             case 6:
-                maitre.affronterMaitre(joueur, maitre);
+                cout << "Vous devez obtenir toutes les médailles pour affronter le Maître." << endl;
                 break;
-            case 7: {
+            case 7:
                 cout << "Avec quel Pokémon interagir (1-6)? ";
                 int num;
                 cin >> num;
                 if (num >= 1 && num <= 6) {
-                    joueur.getPokemon(num - 1).Interagir();
+                    joueur.getPokemon(num - 1)->Interagir();
                 } else {
                     cout << "Numéro invalide." << endl;
                 }
                 break;
-            }
-            case 8: {
-                cout << "Avec quel leader vaincu interagir? (1-4): ";
-                int num;
-                cin >> num;
-                bool resultat = false;
-                switch (num) {
-                    case 1: resultat = leader1.interagir(joueur); break;
-                    case 2: resultat = leader2.interagir(joueur); break;
-                    case 3: resultat = leader3.interagir(joueur); break;
-                    case 4: resultat = leader4.interagir(joueur); break;
-                    default: cout << "Choix invalide." << endl;
-                }
-                if (!resultat) {
-                    cout << "Ce leader n'a pas encore été vaincu." << endl;
-                }
+            case 8:
+                leader1.interagir(joueur);
                 break;
-            }
             case 0:
                 continuer = false;
                 cout << "Merci d'avoir joué !" << endl;
