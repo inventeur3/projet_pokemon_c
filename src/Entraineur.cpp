@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Pokemon.h"
+
 #include "Entraineur.h"
 
 using namespace std;
@@ -21,11 +21,14 @@ Entraineur::Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, P
     message = mes;
     victoire = false;
 }
-
+bool Entraineur::estCapableDeCombattre(){
+    return (indexActuel < nbPokemons);
+}
 Entraineur::~Entraineur() {
-    delete[] pokemons;
+    for (int i = 0; i < 6; i++){
+        pokemons[i].~Pokemon();
+    }
     pokemons = nullptr;
-    delete actif;
     actif = nullptr;
 }
 
@@ -61,14 +64,16 @@ void Entraineur::receivedDamage(Entraineur& attaquant) {
     string typeAtt2 = attaquant.getType2();
     int degatsAdverses = attaquant.getDegat();
 
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < actif->getNbFaib(); i++) {
         if (actif->getFaib()[i] == typeAtt1 || actif->getFaib()[i] == typeAtt2) {
             multiplicateur *= 2.0;
+            break;
         }
     }
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < actif->getNbRes(); i++) {
         if (actif->getRes()[i] == typeAtt1 || actif->getRes()[i] == typeAtt2) {
             multiplicateur *= 0.5;
+            break;
         }
     }
 
@@ -100,7 +105,7 @@ string Entraineur::getNomEntraineur() const {
     return nomEntraineur;
 }
 
-bool Entraineur::interagir() {
+bool Entraineur::interagir(Entraineur& e) {
     if (victoire) {
         cout << message << endl;
     }
@@ -166,13 +171,16 @@ void Joueur::ordre() {
     }
 }
 
-bool Joueur::interagir(Entraineur& entraineur) {
-    if (entraineur.interagir()) {
+bool Joueur::interagir(Leader& leader) {
+    if (leader.interagir(*this)) {
         ajouterBadge();
     }
     return false;
 }
-
+bool Joueur::interagir(Entraineur& e){
+    e.interagir(*this);
+    return false;
+}
 void Joueur::afficher() {
     for (int i = 0; i < nbPokemons; i++) {
         cout << "Pokémon " << i + 1 << " : " << endl;
@@ -188,7 +196,7 @@ Leader::Leader(string n1, string nomGym, string badge,
     : Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6, mes) {
     gymnase = nomGym;
     medaille = badge;
-    badgeAccorde = false;
+    badgeAccorde = true;
 }
 
 string Leader::getGymnase() const {
@@ -199,21 +207,27 @@ string Leader::getMedaille() const {
     return medaille;
 }
 
-void Leader::accorderMedaille(Joueur& joueur) {
+void Leader::accorderMedaille(Entraineur& joueur) {
     cout << nomEntraineur << " remet la médaille " << medaille
             << " à " << joueur.getNomEntraineur() << "." << endl;
 }
 
-bool Leader::interagir(Joueur& joueur) {
-    bool a = (victoire && !badgeAccorde);
+bool Leader::interagir(Entraineur& joueur){
     if (victoire) {
-        if (!badgeAccorde) {
+        if (badgeAccorde) {
             accorderMedaille(joueur);
-            badgeAccorde = true;
+            badgeAccorde = false;
+            return true;
         }
-        cout << message << endl;
+        else{
+            cout << message << endl;
+            return false;
+        }
     }
-    return a;
+    else{
+        cout << "Tu n'as pas battu ce leader reviens quand ça sera fait!" << endl;
+        return false;
+    }
 }
 
 
@@ -221,25 +235,41 @@ Maitre::Maitre(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3,
         Pokemon poke4, Pokemon poke5, Pokemon poke6, string mes)
     :Entraineur(n1, poke1, poke2, poke3, poke4, poke5, poke6, mes) {}
 
-int Maitre::getDegatBoosted() const {
-    return static_cast<int>(actif->getDeg() * 1.25);
-}
 
-void Maitre::affronterMaitre(Joueur& joueur, Maitre& maitre) {
-    if (joueur.getBadges() >= 4) {
-        cout << "Vous avez toutes les médailles ! Le combat contre le Maître commence !" << endl;
+void Joueur::receivedDamage(Maitre& attaquant){
+    float multiplicateur = 1.25;
+    string typeAtt1 = attaquant.getType1();
+    string typeAtt2 = attaquant.getType2();
+    int degatsAdverses = attaquant.getDegat();
 
-        maitre.entrantEnCombat();
-        joueur.entrantEnCombat();
+    for (int i = 0; i < actif->getNbFaib(); i++) {
+        if (actif->getFaib()[i] == typeAtt1 || actif->getFaib()[i] == typeAtt2) {
+            multiplicateur *= 2.0;
+            break;
+        }
+    }
+    for (int i = 0; i < actif->getNbRes(); i++) {
+        if (actif->getRes()[i] == typeAtt1 || actif->getRes()[i] == typeAtt2) {
+            multiplicateur *= 0.5;
+            break;
+        }
+    }
 
-        int degatsBoost = maitre.getDegatBoosted();
-        string type1 = maitre.getType1();
-        string type2 = maitre.getType2();
+    int degatsFinaux = static_cast<int>(degatsAdverses * multiplicateur);
+    PV -= degatsFinaux;
 
-        cout << maitre.getNomEntraineur() << " utilise une attaque spéciale renforcée !" << endl;
-        joueur.receivedDamage(maitre);
-    } else {
-        cout << "Vous devez obtenir toutes les médailles pour affronter le Maître." << endl;
-        cout << "Médailles actuelles : " << joueur.getBadges() << " / 4" << endl;
+    cout << actif->getNom() << " a subi " << degatsFinaux << " dégâts." << endl;
+
+    if (PV <= 0) {
+        actif->unsummon();
+        indexActuel++;
+        if (indexActuel < nbPokemons) {
+            cout << "Le prochain Pokémon entre en combat !" << endl;
+            actif = &pokemons[indexActuel];
+            summon2(*actif);
+        } else {
+            cout << "Tous les Pokémon de " << nomEntraineur << " sont K.O. !" << endl;
+            finCombat();
+        }
     }
 }
