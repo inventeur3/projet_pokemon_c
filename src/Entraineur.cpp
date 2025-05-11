@@ -22,20 +22,20 @@ Entraineur::Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, P
 }
 
 bool Entraineur::estCapableDeCombattre(){
-    return (indexActuel < nbPokemons);
+    return (indexActuel < nbPokemons);//car index commence à 0 
 }
-Entraineur::~Entraineur() {
-    for (int i = 0; i < 6; i++){
+Entraineur::~Entraineur() { //destructeur de la classe entraineur 
+    for (int i = 0; i < 6; i++){ //Appelle explicitement le destructeur de chaque objet Pokemon du tableau pokemons 
         pokemons[i].~Pokemon();
     }
     pokemons = nullptr;
     actif = nullptr;
 }
 
-void Entraineur::entrantEnCombat() {
+void Entraineur::entrantEnCombat() { //C'est une méthode publique de la classe Entraineur qui prépare un entraîneur pour un combat Pokémon.
     indexActuel = 0;
     if (nbPokemons > 0) {
-        actif = &pokemons[indexActuel];
+        actif = &pokemons[indexActuel]; //On pointe le membre actif (qui est un pointeur vers le Pokémon actuellement en combat) vers le premier Pokémon (pokemons[0]).
         summon2(*actif);
     } else {
         cout << nomEntraineur << " n’a pas de Pokémon pour commencer le combat !" << endl;
