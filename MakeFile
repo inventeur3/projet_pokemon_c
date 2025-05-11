@@ -1,30 +1,35 @@
+# Makefile pour projet Pokémon
+
 # Nom de l'exécutable
-EXEC = jeu
+EXEC = pokemon_game
 
-# Liste des fichiers sources
-SRC = Pokemon.cpp Entraineur.cpp Menu.cpp
+# Compilateur
+CXX = g++
 
-# Liste des fichiers objets
+# Options de compilation (ajoute -Wall pour voir les warnings)
+CXXFLAGS = -std=c++11 -Wall
+
+# Fichiers source
+SRC = Menu.cpp Pokemon.cpp Entraineur.cpp 
+
+# Fichiers objet (générés automatiquement à partir des sources)
 OBJ = $(SRC:.cpp=.o)
 
-# Compilateur et options
-CXX = g++
-CXXFLAGS = -Wall -std=c++11
-
-# Règle principale
+# Règle par défaut
 all: $(EXEC)
 
-# Construction de l'exécutable
+# Générer l'exécutable
 $(EXEC): $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $(EXEC) $(OBJ)
 
-# Compilation des fichiers .cpp en .o
+# Générer les fichiers .o
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Nettoyage
+# Nettoyer les fichiers objets et l'exécutable
 clean:
 	rm -f $(OBJ) $(EXEC)
 
-# Nettoyage complet
-mrproper: clean
+# Exécuter le programme
+run: $(EXEC)
+	./$(EXEC)
