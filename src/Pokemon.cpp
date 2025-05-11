@@ -67,7 +67,7 @@ void Pokemon::SetFaibRes(string t1, string t2) {
                 else if (t1 == "Glace"){
                         nbF1 = 4;
                         nbR1 = 1;
-                        f1 = new string[3];
+                        f1 = new string[4];
                         r1 = new string[1];
                         f1[0] = "Feu";
                         f1[1] = "Combat";
@@ -111,7 +111,7 @@ void Pokemon::SetFaibRes(string t1, string t2) {
                         r1[0] = "Poison";
                         r1[1] = "Roche";
                 }
-                else if (t1 == "Électrik"){
+                else if (t1 == "Vol"){
                         nbF1 = 3;
                         nbR1 = 3;
                         f1 = new string[3];
@@ -287,7 +287,7 @@ void Pokemon::SetFaibRes(string t1, string t2) {
                 else if (t2 == "Glace"){
                         nbF2 = 4;
                         nbR2 = 1;
-                        f2 = new string[3];
+                        f2 = new string[4];
                         r2 = new string[1];
                         f2[0] = "Feu";
                         f2[1] = "Combat";
@@ -331,7 +331,7 @@ void Pokemon::SetFaibRes(string t1, string t2) {
                         r2[0] = "Poison";
                         r2[1] = "Roche";
                 }
-                else if (t2 == "Électrik"){
+                else if (t2 == "Vol"){
                         nbF2 = 3;
                         nbR2 = 3;
                         f2 = new string[3];
@@ -456,8 +456,10 @@ void Pokemon::SetFaibRes(string t1, string t2) {
                         f2 = new string[0];
                         valid = false;
                 }
-                faiblesses = new string[nbF1 + nbF2];
-                resistances = new string[nbR1 + nbR2];
+                nbFaiblesses = nbF1 + nbF2;
+                faiblesses = new string[nbFaiblesses];
+                nbResistances = nbR1 + nbR2;
+                resistances = new string[nbResistances];
                 for (int i = 0; i < nbF1; i++){
                         faiblesses[i] = f1[i];
                 }
@@ -502,6 +504,8 @@ Pokemon::Pokemon(){
         message = "";
         faiblesses = nullptr;
         resistances = nullptr;
+        nbFaiblesses = 0;
+        nbResistances = 0;
 }
 
 Pokemon::~Pokemon() {
@@ -564,5 +568,89 @@ void Pokemon::afficher() {
         cout << "    Types          : " << type1 << "/" << type2 << endl;
         cout << "    PV             : " << PVmax << endl;
         cout << "    Attaque/dégâts : " << attaque << "/" << degats << endl;
+}
+Pokemon::Pokemon(const Pokemon& other) {
+    name = other.name;
+    type1 = other.type1;
+    type2 = other.type2;
+    PVmax = other.PVmax;
+    attaque = other.attaque;
+    degats = other.degats;
+    message = other.message;
+    valid = other.valid;
+    nbFaiblesses = other.nbFaiblesses;
+    nbResistances = other.nbResistances;
+
+    // Copier les faiblesses
+    if (nbFaiblesses >= 0 && other.faiblesses != nullptr) {
+        faiblesses = new string[nbFaiblesses];
+        for (int i = 0; i < nbFaiblesses; i++) {
+            faiblesses[i] = other.faiblesses[i];
+        }
+    } else {
+        faiblesses = new string[0];
+    }
+
+    // Copier les resistances
+    if (nbResistances >= 0 && other.resistances != nullptr) {
+        resistances = new string[nbResistances];
+        for (int i = 0; i < nbResistances; i++) {
+            resistances[i] = other.resistances[i];
+        }
+    } else {
+        resistances = new string[0];
+    }
+
+    
+}
+
+int Pokemon::getNbFaib(){
+        return nbFaiblesses;
+        }
+
+
+int Pokemon::getNbRes(){
+        return nbResistances;
+}
+
+Pokemon& Pokemon::operator=(const Pokemon& other) {
+    if (this != &other) {
+        // Libérer la mémoire existante
+        delete[] faiblesses;
+        delete[] resistances;
+
+        // Copier les champs simples
+        name = other.name;
+        type1 = other.type1;
+        type2 = other.type2;
+        PVmax = other.PVmax;
+        attaque = other.attaque;
+        degats = other.degats;
+        message = other.message;
+        valid = other.valid;
+        nbFaiblesses = other.nbFaiblesses;
+        nbResistances = other.nbResistances;
+
+        // Allouer et copier les faiblesses (corrigé)
+        if (nbFaiblesses > 0 && other.faiblesses != nullptr) {
+            faiblesses = new string[nbFaiblesses];
+            for (int i = 0; i < nbFaiblesses; i++) {
+                faiblesses[i] = other.faiblesses[i];
+            }
+        } else {
+            faiblesses = nullptr;
+        }
+
+        // Allouer et copier les resistances (corrigé)
+        if (nbResistances > 0 && other.resistances != nullptr) {
+            resistances = new string[nbResistances];
+            for (int i = 0; i < nbResistances; i++) {
+                resistances[i] = other.resistances[i];
+            }
+        } else {
+            resistances = nullptr;
+        }
+    }
+    return *this;
 }
 
