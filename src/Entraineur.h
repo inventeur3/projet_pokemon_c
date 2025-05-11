@@ -1,6 +1,8 @@
 #ifndef ENTRAINEURGLOBAL_H
 #define ENTRAINEURGLOBAL_H
 
+#include "Pokemon.h"
+
 #include <string>
 #include <vector>
 
@@ -29,14 +31,35 @@ public:
     string getType1() const;
     string getType2() const;
     Pokemon* getActif() const;
-
+    bool estCapableDeCombattre();
     void attaque(Entraineur& cible);
     void receivedDamage(Entraineur& attaquant);
     void finCombat();
     string getNomEntraineur() const;
-    bool interagir();
+    bool interagir(Entraineur& e);
 };
+class Maitre : public Entraineur {
+    public:
+        Maitre(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3,
+            Pokemon poke4, Pokemon poke5, Pokemon poke6, string mes="");
 
+};
+class Leader : public Entraineur {
+    private:
+        string gymnase;
+        string medaille;
+        bool badgeAccorde;
+
+    public:
+        Leader(string n1, string nomGym, string badge,
+            Pokemon poke1, Pokemon poke2, Pokemon poke3,
+            Pokemon poke4, Pokemon poke5, Pokemon poke6, string mes = "");
+
+        string getGymnase() const;
+        string getMedaille() const;
+        void accorderMedaille(Entraineur& joueur);
+        bool interagir(Entraineur& joueur);
+};
 class Joueur : public Entraineur {
     private:
         int nbBadges;
@@ -55,37 +78,13 @@ class Joueur : public Entraineur {
 
         void ajouterVictoire();
         void ajouterDefaite();
-
+        void receivedDamage(Maitre& m);
         void ordre();
         bool interagir(Entraineur& entraineur);
+        bool interagir(Leader& leader);
         void afficher();
         Pokemon* getPokemon(int i);
 };
 
-class Leader : public Entraineur {
-    private:
-        string gymnase;
-        string medaille;
-        bool badgeAccorde;
-
-    public:
-        Leader(string n1, string nomGym, string badge,
-            Pokemon poke1, Pokemon poke2, Pokemon poke3,
-            Pokemon poke4, Pokemon poke5, Pokemon poke6, string mes = "");
-
-        string getGymnase() const;
-        string getMedaille() const;
-        void accorderMedaille(Joueur& joueur);
-        bool interagir(Joueur& joueur);
-};
-
-class Maitre : public Entraineur {
-    public:
-        Maitre(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3,
-            Pokemon poke4, Pokemon poke5, Pokemon poke6, string mes="");
-
-        int getDegatBoosted() const;
-        void affronterMaitre(Joueur& joueur, Maitre& maitre);
-};
 
 #endif // ENTRAINEURGLOBAL_H
