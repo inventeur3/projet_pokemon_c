@@ -2,19 +2,18 @@
 #include <string>
 #include "Pokemon.h"
 
-
 using namespace std;
 
-void Pokemon::SetFaibRes(string t1, string t2) {
-                int nbF1 = 0;
-                int nbF2 = 0;
-                int nbR1 = 0;
-                int nbR2 = 0;
-                string* f1 = nullptr;
+void Pokemon::SetFaibRes(string t1, string t2) { //Initialise les faiblesses et résistances d’un Pokémon en fonction de ses deux types 
+                int nbF1 = 0;//nombre de faiblesses du type 1
+                int nbF2 = 0;//nombre de faiblesses du type 2 
+                int nbR1 = 0;//nombre de resistance du type 1
+                int nbR2 = 0;//nombre de resistance du type 2 
+                string* f1 = nullptr;//tableaux temporaires pour stocker les faiblesses de chaque type.
                 string* f2 = nullptr;
-                string* r1 = nullptr;
+                string* r1 = nullptr;//tableaux temporaires pour stocker les résistances de chaque type.
                 string* r2 = nullptr;
-                if (t1 == "Feu"){
+                if (t1 == "Feu"){ //Cela remplit dynamiquement les tableaux des faiblesses et résistances 
                         nbF1 = 3;
                         nbR1 = 5;
                         f1 = new string[3];
@@ -447,42 +446,42 @@ void Pokemon::SetFaibRes(string t1, string t2) {
                         r2[2] = "Ténèbres";
                         r2[3] = "Dragon";
                 }
-                else if (t2 == "" or t2 == "Normal"){
+                else if (t2 == "" or t2 == "Normal"){ //On initialise les tableaux avec 0 éléments pour éviter des pointeurs non initialisés
                         f2 = new string[0];
                         r2 = new string[0];
                 }
                 else{
-                        r2 = new string[0];
+                        r2 = new string[0];//on crée quand même des tableaux vides juste pour éviter une erreur mémoire,mais on invalide le Pokémon avec valid = false.
                         f2 = new string[0];
                         valid = false;
                 }
                 nbFaiblesses = nbF1 + nbF2;
-                faiblesses = new string[nbFaiblesses];
+                faiblesses = new string[nbFaiblesses];//On alloue dynamiquement un nouveau tableau pour stocker toutes les faiblesses combinées du Pokémon
                 nbResistances = nbR1 + nbR2;
-                resistances = new string[nbResistances];
+                resistances = new string[nbResistances];//On crée dynamiquement un tableau pour contenir toutes les résistances combinées
                 for (int i = 0; i < nbF1; i++){
                         faiblesses[i] = f1[i];
                 }
-                for (int i = 0; i < nbF2; i++){
+                for (int i = 0; i < nbF2; i++){ //On place les faiblesses du type 2 à la suite dans le tableau faiblesses.
                         faiblesses[nbF1 + i] = f2[i];
                 }
                 for (int i = 0; i < nbR1; i++){
                         resistances[i] = r1[i];
                 }
-                for (int i = 0; i < nbR2; i++){
+                for (int i = 0; i < nbR2; i++){ //On termine par copier les résistances du type 2 à la suite de celles du type 1.
                         resistances[nbR1 + i] = r2[i];
                 }
-                delete[] f1;
-                delete[] f2;
+                delete[] f1;//Cela libère la mémoire dynamique qui a été allouée avec new string[...] plus tôt dans la fonction
+                delete[] f2;// Si tu ne fais pas ces delete[], tu crées une fuite de mémoire : la mémoire reste allouée mais inaccessible.
                 delete[] r1;
                 delete[] r2;
-                f1 = nullptr;
+                f1 = nullptr;//Cela évite les dangling pointers (pointeurs pendants), c’est-à-dire des pointeurs qui pointent vers de la mémoire supprimée
                 f2 = nullptr;
                 r1 = nullptr;
                 r2 = nullptr;
         }
 
-Pokemon::Pokemon(string nom, string t1, string t2, int maxPV, string nomA, int nbDeg, string mes) {
+Pokemon::Pokemon(string nom, string t1, string t2, int maxPV, string nomA, int nbDeg, string mes) { //Ce constructeur prend 7 paramètres pour initialiser un objet Pokemon
         name = nom;
         type1 = t1;
         type2 = t2;
@@ -493,7 +492,7 @@ Pokemon::Pokemon(string nom, string t1, string t2, int maxPV, string nomA, int n
         valid = (nom != "" && PVmax > 0 && nomA != "" && nbDeg > 0 && mes != "");  // CORRECTION ici: maxPPPV → PVmax
         SetFaibRes(t1, t2);
 }
-Pokemon::Pokemon(){
+Pokemon::Pokemon(){ //constructeur par défaut 
         valid = false;
         name = "";
         type1 = "";
@@ -509,9 +508,9 @@ Pokemon::Pokemon(){
 }
 
 Pokemon::~Pokemon() {
-        delete[] faiblesses;
+        delete[] faiblesses;//Libère la mémoire allouée dynamiquement pour le tableau des faiblesses (créé dans SetFaibRes avec new string[]).
         delete[] resistances;
-        faiblesses = nullptr;
+        faiblesses = nullptr;//On remet le pointeur à nullptr pour éviter qu’il pointe vers une zone déjà libérée (ce qui éviterait un dangling pointer, un pointeur "dangereux").
         resistances = nullptr;
 }
 
@@ -543,11 +542,11 @@ int Pokemon::getDeg() {
         return degats;
 }
 
-string* Pokemon::getFaib() {
+string* Pokemon::getFaib() { //Retourne le tableau de faiblesses du Pokémon (types contre lesquels il subit x2).
         return faiblesses;
 }
 
-string* Pokemon::getRes() {
+string* Pokemon::getRes() { //Retourne le tableau de résistances du Pokémon (types contre lesquels il subit /2).
         return resistances;
 }
 
@@ -555,7 +554,7 @@ void Pokemon::unsummon() {
         cout << name << " est K.O. !" << endl;
 }
 
-void Pokemon::Interagir() {
+void Pokemon::Interagir() { // Elle affiche dans la console le message personnalisé du Pokémon.
         cout << message << endl;
 }
 
@@ -563,14 +562,15 @@ bool Pokemon::estValide() {
         return valid;
 }
 
-void Pokemon::afficher() {
+void Pokemon::afficher() { //Cette méthode affiche toutes les informations principales d’un objet Pokemon.
         cout << "    Nom du Pokémon : " << name << endl;
         cout << "    Types          : " << type1 << "/" << type2 << endl;
         cout << "    PV             : " << PVmax << endl;
         cout << "    Attaque/dégâts : " << attaque << "/" << degats << endl;
 }
-Pokemon::Pokemon(const Pokemon& other) {
-    name = other.name;
+
+Pokemon::Pokemon(const Pokemon& other) { //Ce constructeur est un constructeur de copie pour la classe Pokemon. 
+    name = other.name; // Il permet de créer un nouveau Pokémon en copiant tous les attributs d’un autre Pokémon existant (appelé ici other).
     type1 = other.type1;
     type2 = other.type2;
     PVmax = other.PVmax;
@@ -604,7 +604,7 @@ Pokemon::Pokemon(const Pokemon& other) {
     
 }
 
-int Pokemon::getNbFaib(){
+int Pokemon::getNbFaib(){ //Ces deux fonctions sont des accesseurs (getter) qui permettent de consulter le nombre de faiblesses et de résistances d’un Pokémon.
         return nbFaiblesses;
         }
 
@@ -613,8 +613,8 @@ int Pokemon::getNbRes(){
         return nbResistances;
 }
 
-Pokemon& Pokemon::operator=(const Pokemon& other) {
-    if (this != &other) {
+Pokemon& Pokemon::operator=(const Pokemon& other) { //Cette fonction définit l’opérateur d’affectation (operator=) pour la classe Pokemon. 
+  if (this != &other) { //Elle permet de copier un Pokémon dans un autre déjà existant, tout en gérant correctement l’allocation dynamique de mémoire. //C’est ce qu’on appelle une copie profonde (deep copy)
         // Libérer la mémoire existante
         delete[] faiblesses;
         delete[] resistances;
