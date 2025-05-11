@@ -11,8 +11,8 @@ void Combat(Joueur& j, Leader& e) {
 
     j.entrantEnCombat();
     e.entrantEnCombat();
-    bool a = j.estCapableDeCombattre(); // tu devras remplacer par j.estCapableDeCombattre()
-    bool b = e.estCapableDeCombattre(); // idem pour e
+    bool a = j.estCapableDeCombattre(); 
+    bool b = e.estCapableDeCombattre(); 
     while (a && b) {
         j.attaque(e);
         b = e.estCapableDeCombattre();
