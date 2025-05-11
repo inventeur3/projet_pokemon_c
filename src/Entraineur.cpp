@@ -4,11 +4,11 @@
 
 using namespace std;
 
-Entraineur::Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4,
+Entraineur::Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, Pokemon poke4,//constructeur de la classe entraineur 
             Pokemon poke5, Pokemon poke6, string mes) {
-    nomEntraineur = n1;
-    pokemons = new Pokemon[6];
-    nbPokemons = 0;
+    nomEntraineur = n1; //nom de l'entraineur 
+    pokemons = new Pokemon[6];//On alloue dynamiquement un tableau de 6 Pokémon vides
+    nbPokemons = 0;//Compteur du nombre de Pokémon valides réellement assignés.
     if (poke1.estValide()) pokemons[nbPokemons++] = poke1;
     if (poke2.estValide()) pokemons[nbPokemons++] = poke2;
     if (poke3.estValide()) pokemons[nbPokemons++] = poke3;
@@ -20,6 +20,7 @@ Entraineur::Entraineur(string n1, Pokemon poke1, Pokemon poke2, Pokemon poke3, P
     message = mes;
     victoire = false;
 }
+
 bool Entraineur::estCapableDeCombattre(){
     return (indexActuel < nbPokemons);
 }
