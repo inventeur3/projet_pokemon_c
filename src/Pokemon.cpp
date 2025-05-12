@@ -631,7 +631,7 @@ Pokemon& Pokemon::operator=(const Pokemon& other) {
         nbFaiblesses = other.nbFaiblesses;
         nbResistances = other.nbResistances;
 
-        // Allouer et copier les faiblesses (corrigé)
+        // Allouer et copier les faiblesses
         if (nbFaiblesses > 0 && other.faiblesses != nullptr) {
             faiblesses = new string[nbFaiblesses];
             for (int i = 0; i < nbFaiblesses; i++) {
@@ -641,7 +641,7 @@ Pokemon& Pokemon::operator=(const Pokemon& other) {
             faiblesses = nullptr;
         }
 
-        // Allouer et copier les resistances (corrigé)
+        // Allouer et copier les resistances
         if (nbResistances > 0 && other.resistances != nullptr) {
             resistances = new string[nbResistances];
             for (int i = 0; i < nbResistances; i++) {
