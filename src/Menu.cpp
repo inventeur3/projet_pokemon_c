@@ -60,7 +60,7 @@ void afficherMenu() {
     cout << "5. Affronter un leader de gymnase" << endl;
     cout << "6. Affronter le Maître Pokémon" << endl;
     cout << "7. Interagir avec les Pokémon" << endl;
-    cout << "8. Interagir avec les entraîneurs vaincus" << endl;
+    cout << "8. Interagir avec les entraîneurs vaincus" << endl;//que les leaders 
     cout << "0. Quitter" << endl;
     cout << "Votre choix: ";
 }
@@ -125,6 +125,7 @@ int main() {
     Pokemon raichuMaitre("Raichu", "Électrik", "", 60, "Tonnerre", (int)(1.25*100), "Rai!");
 
     Maitre maitre("Mewtwo", dracolosse, lokhlassMaitre, arcanin, rhinoférosMaitre, electhorMaitre, raichuMaitre, "Je suis inpresionné par ton talent de dresseur!");
+    
     int choix;
     bool continuer = true;
     string s;
@@ -133,35 +134,35 @@ int main() {
         cin >> choix;
         switch (choix) {
             case 1:
-                joueur.afficher();
+                joueur.afficher(); //pokémon 
                 cout<<"";
                 cin >> s;
                 break;
             case 2:
-                cout << "Nombre de badges: " << joueur.getBadges() << endl;
+                cout << "Nombre de badges: " << joueur.getBadges() << endl;// dans joueur 
                 cout << "Combats gagnés: " << joueur.getCombatsGagnes() << endl;
                 cout << "Combats perdus: " << joueur.getCombatsPerdus() << endl;
                 cout<<"";
                 cin >> s;
                 break;
             case 3:
-                joueur.ordre();
+                joueur.ordre();//entraineur 
                 cout<<"";
                 cin >> s;
                 break;
             case 4:
                 for (int i = 0; i < 6; i++) {
-                    cout << "Le Pokémon " << i << " a " << joueur.getPokemon(i)->getPVmax() << " PV en tout." << endl;
+                    cout << "Le Pokémon " << i << " a " << joueur.getPokemon(i)->getPVmax() << " PV en tout." << endl;//pokemon 
                 }
                 cout<<"";
                 cin >> s;
                 break;
             case 5:
-                cout << "Quel leader voulez-vous affronter ? (1: Pierre(Roche), 2: Ondine(Cascade), 3: Major Bob(Foudre), 4: Erika(Prisme) : ";
+                cout << "Quel leader voulez-vous affronter ? (1: Pierre(Roche), 2: Ondine(Cascade), 3: Major Bob(Foudre), 4: Erika(Prisme) : ";//nom des badges 
                 int choixLeader;
                 cin >> choixLeader;
                 switch (choixLeader) {
-                    case 1: Combat(joueur, leader1); break;
+                    case 1: Combat(joueur, leader1); break;//fonction combat 1 
                     case 2: Combat(joueur, leader2); break;
                     case 3: Combat(joueur, leader3); break;
                     case 4: Combat(joueur, leader4); break;
@@ -173,7 +174,7 @@ int main() {
             case 6:
                 cout << "Vous devez obtenir toutes les médailles pour affronter le Maître." << endl;
                 if (joueur.getBadges() >= 4){
-                    Combat(joueur, maitre);
+                    Combat(joueur, maitre);//fonction combat 2 
                 }
                 cout<<"";
                 cin >> s;
@@ -183,7 +184,7 @@ int main() {
                 int num;
                 cin >> num;
                 if (num >= 1 && num <= 6) {
-                    joueur.getPokemon(num - 1)->Interagir();
+                    joueur.getPokemon(num - 1)->Interagir();//pokemon 
                 } else {
                     cout << "Numéro invalide." << endl;
                 }
@@ -191,7 +192,7 @@ int main() {
                 cin >> s;
                 break;
             case 8: {
-                cout << "Avec quel leader voulez-vous interagir ? (1: Pierre(Roche), 2: Ondine(Cascade), 3: Major Bob, 4: Erika) : ";
+                cout << "Avec quel leader voulez-vous interagir ? (1: Pierre(Roche), 2: Ondine(Cascade), 3: Major Bob, 4: Erika) : ";//intéragir avec les leaders 
                 int choixLeaderInter;
                 cin >> choixLeaderInter;
                 switch (choixLeaderInter) {
