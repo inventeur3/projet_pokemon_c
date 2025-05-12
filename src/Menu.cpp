@@ -33,8 +33,8 @@ void Combat(Joueur& j, Entraineur& e) {
 
     j.entrantEnCombat();
     e.entrantEnCombat();
-    bool a = j.estCapableDeCombattre(); // tu devras remplacer par j.estCapableDeCombattre()
-    bool b = e.estCapableDeCombattre(); // idem pour e
+    bool a = j.estCapableDeCombattre();
+    bool b = e.estCapableDeCombattre(); 
     while (a && b) {
         j.attaque(e);
         b = e.estCapableDeCombattre();
@@ -84,7 +84,7 @@ int main() {
     Pokemon rhinocorne("Rhinocorne", "Sol", "Roche", 80, "Charge", 85, "Rhino!");
     Pokemon rhinoféros("Rhinoféros", "Sol", "Roche", 105, "Cornes", 120, "Rhinof!");
 
-    Leader leader1("Pierre", "Argenta", "Roche", racaillou, onix, gravalanch, grolem, rhinocorne, rhinoféros, "Bravo tu m'as debut! Comme-ci je mettais reçu une pierre sur la tête.");
+    Leader leader1("Pierre", "Argenta", "Roche", racaillou, onix, gravalanch, grolem, rhinocorne, rhinoféros, "Bravo tu m'as battut! Comme-ci je mettais reçu une pierre sur la tête.");
     
     // Leader 2 : Ondine (Eau)
     Pokemon carabaffe("Carabaffe", "Eau", "", 59, "Pistolet à O", 80, "Carab!");
