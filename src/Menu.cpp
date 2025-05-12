@@ -6,47 +6,48 @@
 
 using namespace std;
 
-void Combat(Joueur& j, Leader& e) {
+void Combat(Joueur& j, Leader& e) { //Cette fonction simule un combat entre un joueur et un leader de gymnase
 
-    j.entrantEnCombat();
+    j.entrantEnCombat(); //si t capable de rentrer en combat 
     e.entrantEnCombat();
     bool a = j.estCapableDeCombattre(); // tu devras remplacer par j.estCapableDeCombattre()
     bool b = e.estCapableDeCombattre(); // idem pour e
-    while (a && b) {
-        j.attaque(e);
-        b = e.estCapableDeCombattre();
-        if (b) {
-            e.attaque(j);
-            a = j.estCapableDeCombattre();
+    while (a && b) { //tant que les deux peuvent se battre 
+        j.attaque(e);//Le joueur attaque le leader 
+        b = e.estCapableDeCombattre();//on vérifie si le pokemon du leader peut toujours combattre 
+        if (b) { 
+            e.attaque(j); //le leader riposte 
+            a = j.estCapableDeCombattre(); //on vérifie si le joueur peut encore se battre 
         }
     }
     if (a){
-        j.ajouterVictoire();
+        j.ajouterVictoire();//Si à la fin du combat, le joueur est encore debout, c’est lui le vainqueur
         j.interagir(e);
     }
     if (b){
-        j.ajouterDefaite();
+        j.ajouterDefaite();//comptabilise le combat perdu 
     }
 }
+
 void Combat(Joueur& j, Entraineur& e) {
 
-    j.entrantEnCombat();
+    j.entrantEnCombat();//voir si tu peux rentrer en combat 
     e.entrantEnCombat();
     bool a = j.estCapableDeCombattre(); // tu devras remplacer par j.estCapableDeCombattre()
     bool b = e.estCapableDeCombattre(); // idem pour e
-    while (a && b) {
-        j.attaque(e);
-        b = e.estCapableDeCombattre();
+    while (a && b) { //tant que les deux peuvent se battre 
+        j.attaque(e); //le joueur attaque le maitre  
+        b = e.estCapableDeCombattre(); //on verifie si le pokemon du maitre peut toujours combattrre 
         if (b) {
-            e.attaque(j);
-            a = j.estCapableDeCombattre();
+            e.attaque(j);//le maitre riposte 
+            a = j.estCapableDeCombattre();//on vérifie si le joueur peut encore se battre 
         }
     }
     if (a){
-        j.ajouterVictoire();
+        j.ajouterVictoire();//Si à la fin du combat, le joueur est encore debout, c’est lui le vainqueur
     }
     if (b){
-        j.ajouterDefaite();
+        j.ajouterDefaite();//on comptabilise le combat perdu 
     }
 }
 
