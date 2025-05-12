@@ -114,7 +114,7 @@ int main() {
     Pokemon saquedeneu("Saquedeneu", "Plante", "", 65, "Fouet Lianes", 50, "Saqu!");
     Pokemon noadkoko("Noadkoko", "Plante", "Psy", 95, "Psyko", 120, "Noad!");
 
-    Leader leader4("Erika", "Céladopole", "Prisme", ortide, parasect, empiflor, rafflesia, saquedeneu, noadkoko, "Bravo tu m'érites cette médaille!!");
+    Leader leader4("Erika", "Céladopole", "Prisme", ortide, parasect, empiflor, rafflesia, saquedeneu, noadkoko, "Bravo tu mérites cette médaille!!");
     
     // Maître Pokémon
     Pokemon dracolosse("Dracolosse", "Dragon", "Vol", 91, "Draco-Rage", (int)(140*1.25), "Draco!");
